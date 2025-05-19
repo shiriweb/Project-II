@@ -6,22 +6,25 @@ import CartTotal from "../Components/CartTotal";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity } = useContext(ShopContext);
+  const { products, currency, cartItems, updateQuantity } =
+    useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const tempData = [];
-    for (const itemId in cartItems) {
-      if (cartItems[itemId] > 0) {
-        tempData.push({
-          _id: items,  
-          quantity: cartItems[itemId],
-        });
+    if (products.length > 0) {
+      const tempData = [];
+      for (const itemId in cartItems) {
+        if (cartItems[itemId] > 0) {
+          tempData.push({
+            _id: itemId,
+            quantity: cartItems[itemId],
+          });
+        }
       }
+      setCartData(tempData);
     }
-    setCartData(tempData);
-  }, [cartItems]);
+  }, [cartItems, products]);
 
   if (cartData.length === 0) {
     return (
@@ -38,7 +41,7 @@ const Cart = () => {
       <div className="space-y-2">
         {cartData.map((item, index) => {
           const productData = products.find(
-            (product) => String(product._id) === String(item._id)  // changed here
+            (product) => String(product._id) === String(item._id) // changed here
           );
 
           if (!productData) {
@@ -63,7 +66,9 @@ const Cart = () => {
               </div>
 
               <div className="flex-1 ml-2">
-                <p className="text-sm font-medium text-gray-800">{productData.name}</p>
+                <p className="text-sm font-medium text-gray-800">
+                  {productData.name}
+                </p>
                 <p className="text-xs text-green-600 font-semibold">
                   {currency}
                   {productData.price}
@@ -75,17 +80,18 @@ const Cart = () => {
                   type="number"
                   min={1}
                   value={item.quantity}
-                  onChange={(e) =>
-                    e.target.value === "" || e.target.value === "0"
-                      ? null
-                      : updateQuantity(item._id, Number(e.target.value))  // changed here
+                  onChange={
+                    (e) =>
+                      e.target.value === "" || e.target.value === "0"
+                        ? null
+                        : updateQuantity(item._id, Number(e.target.value)) // changed here
                   }
                   className="w-10 h-6 text-center border border-gray-300 rounded text-xs"
                 />
               </div>
 
               <button
-                onClick={() => updateQuantity(item._id, 0)}  // changed here
+                onClick={() => updateQuantity(item._id, 0)} // changed here
                 className="text-red-500 hover:text-red-700 text-sm"
               >
                 <FontAwesomeIcon icon={faTrashAlt} />

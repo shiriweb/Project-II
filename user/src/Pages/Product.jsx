@@ -7,44 +7,54 @@ import { ShopContext } from "../Context/ShopContext";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products } = useContext(ShopContext);
+  const { products, addToCart } = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
 
-const fetchProductData = () => {
-  console.log("Looking for productId:", productId);
-  console.log("Products array:", products);
+  const fetchProductData = () => {
+    console.log("Looking for productId:", productId);
+    console.log("Products array:", products);
 
-  const product = products.find((item) => item._id === productId);
-  if (product) {
-    setProductData(product);
-    console.log("Found product:", product);
-  } else {
-    console.log("Product not found");
-  }
-};
-
+    const product = products.find((item) => item._id === productId);
+    if (product) {
+      setProductData(product);
+      console.log("Found product:", product);
+    } else {
+      console.log("Product not found");
+    }
+  };
 
   useEffect(() => {
     fetchProductData();
   }, [productId, products]);
 
   return productData ? (
-    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center p-4">
-      <div className="max-w-lg w-full bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="relative pb-2/3">
+    <div className="flex items-center justify-center p-2 mt-[-5px]">
+      <div className="max-w-3xl w-full flex">
+        <div className="w-1/3 p-3">
           <img
             src={productData.image}
             alt={productData.name}
-            className="w-full h-full object-cover rounded-t-lg"
+            className="w-full h-auto object-cover rounded-lg max-h-60"
           />
         </div>
-        <div className="p-6 space-y-4">
-          <h1 className="text-2xl font-bold text-gray-800">{productData.name}</h1>
-          <p className="text-gray-600">{productData.description}</p>
-          <div className="text-xl font-semibold text-green-600">Rs {productData.price}</div>
-          <button className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition duration-300">
+        <div className="w-2/3 p-6 space-y-3">
+          <h1 className="text-lg font-bold text-gray-800">
+            {productData.name}
+          </h1>
+          <p className="text-base text-gray-600">{productData.description}</p>
+          <div className="text-base font-semibold text-green-600">
+            Rs {productData.price}
+          </div>
+          <div className="text-base font-semibold text-green-600">
+            Category: {productData.category}
+          </div>
+          <button onClick={()=>addToCart(productData._id)} className="bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-lg text-base transition duration-300">
             Add to Cart
           </button>
+          <div className="text-xs text-gray-400">
+            We offer 24/7 Customer Support, Secure Payment, and Quality
+            Guaranteed.
+          </div>
         </div>
       </div>
     </div>

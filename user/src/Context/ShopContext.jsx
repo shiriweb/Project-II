@@ -16,30 +16,31 @@ const ShopContextProvider = (props) => {
   const [token, setToken] = useState("");
 
   // Add to Cart
-  const addToCart = async (itemId) => {
-    let cartData = { ...cartItems };
+const addToCart = async (itemId) => {
+  let cartData = structuredClone(cartItems);
 
-    if (cartData[itemId]) {
-      cartData[itemId] += 1;
-    } else {
-      cartData[itemId] = 1;
+  if (cartData[itemId]) {
+    cartData[itemId] += 1;
+  } else {
+    cartData[itemId] = 1;
+  }
+
+  setCartItems(cartData);
+
+  if (token) {
+    try {
+      await axios.post(
+        backendUrl + "/api/cart/add",
+        { itemId }, 
+        { headers: { token } }
+      );
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
     }
+  }
+};
 
-    setCartItems(cartData);
-
-    if (token) {
-      try {
-        await axios.post(
-          backendUrl + "/api/cart/add",
-          { itemId },
-          { headers: { token } }
-        );
-      } catch (error) {
-        console.log(error);
-        alert(error.message);
-      }
-    }
-  };
 
   // Get Cart Count
   const getCartCount = () => {

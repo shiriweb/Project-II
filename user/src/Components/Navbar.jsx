@@ -55,12 +55,7 @@ const Navbar = () => {
             {/* Dropdown Menu */}
             {token && (
               <div className="absolute right-0 bg-white shadow-md rounded-lg mt-2 z-20 w-40 opacity-0 group-hover:opacity-100 group-hover:block transition-opacity duration-200">
-                <p
-                  onClick={() => navigate("/profile")}
-                  className="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded-t-lg cursor-pointer transition duration-200 text-sm"
-                >
-                  Profile
-                </p>
+        
                 <p
                   onClick={() => navigate("/orders")}
                   className="block px-4 py-2 text-gray-700 hover:bg-green-100 cursor-pointer transition duration-200 text-sm"
